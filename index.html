@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uji Coba TKA - UPT SD Negeri Kedungrejo 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Arial Nova Cond';
+            src: local('Arial Nova Cond'), local('Arial Narrow'), local('Arial');
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        .title-header {
+            font-family: 'Arial Nova Cond', 'Arial Narrow', Arial, sans-serif;
+            font-weight: 700;
+        }
+
+        /* Tipografi Khusus Soal */
+        .text-stimulus {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+
+        .text-sumber {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 8pt;
+            font-style: italic;
+            color: #475569;
+        }
+
+        .text-sumber a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        .text-soal {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .text-opsi {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+            color: #334155;
+        }
+
+        /* Custom Radio Bullet untuk PG */
+        .pg-bullet {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 11pt;
+            transition: all 0.2s ease;
+        }
+
+        .pg-option.selected .pg-bullet {
+            background-color: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .pg-option.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        /* Custom Checkbox Box untuk MCMA */
+        .mcma-box {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 2px solid #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .mcma-option.selected .mcma-box {
+            background-color: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+
+        .mcma-option.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        /* Custom Radio untuk Tabel Kategori */
+        .category-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #94a3b8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            transition: all 0.2s ease;
+        }
+
+        .category-check.active-true {
+            background-color: #16a34a;
+            border-color: #16a34a;
+            color: white;
+        }
+
+        .category-check.active-false {
+            background-color: #dc2626;
+            border-color: #dc2626;
+            color: white;
+        }
+
+        /* Styles Navigasi Soal */
+        .nav-btn-default {
+            background-color: #e2e8f0;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        .nav-btn-answered {
+            background-color: #22c55e;
+            color: white;
+            border: 1px solid #16a34a;
+        }
+
+        .nav-btn-doubt {
+            background-color: #f97316;
+            color: white;
+            border: 1px solid #ea580c;
+        }
+
+        .nav-btn-active {
+            ring: 3px;
+            ring-color: #3b82f6;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative">
+
+    <!-- ==================== 1. HALAMAN LOGIN / AWAL ==================== -->
+    <div id="page-login" class="flex-1 flex flex-col items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-lg w-full p-6 md:p-8 relative">
+            
+            <!-- Logo Tut Wuri Handayani -->
+            <div class="flex justify-center mb-4">
+                <div class="w-24 h-24 rounded-full bg-blue-50 border-2 border-blue-200 p-2 flex items-center justify-center shadow-inner">
+                    <svg viewBox="0 0 200 200" class="w-full h-full text-blue-600 fill-current">
+                        <!-- Shield Outer -->
+                        <polygon points="100,10 180,50 180,130 100,190 20,130 20,50" fill="#0284c7"/>
+                        <polygon points="100,18 172,55 172,126 100,180 28,126 28,55" fill="#ffffff"/>
+                        <polygon points="100,24 165,58 165,122 100,172 35,122 35,58" fill="#0284c7"/>
+                        <!-- Flame Top -->
+                        <path d="M100,35 Q110,60 100,75 Q90,60 100,35 Z" fill="#f59e0b"/>
+                        <path d="M100,42 Q105,60 100,70 Q95,60 100,42 Z" fill="#ef4444"/>
+                        <!-- Wings / Wings of Tutwuri -->
+                        <path d="M50,85 Q75,75 100,95 Q125,75 150,85 Q130,120 100,125 Q70,120 50,85 Z" fill="#ffffff"/>
+                        <path d="M60,92 Q78,85 100,102 Q122,85 140,92 Q125,115 100,118 Q75,115 60,92 Z" fill="#0284c7"/>
+                        <!-- Book -->
+                        <polygon points="65,130 100,140 135,130 135,145 100,155 65,145" fill="#ffffff"/>
+                        <polygon points="68,133 100,142 132,133 132,142 100,151 68,142" fill="#f59e0b"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Header Judul -->
+            <div class="text-center mb-6">
+                <h1 class="title-header text-xl md:text-2xl text-slate-800 tracking-wide uppercase leading-tight">
+                    UJI COBA TES KEMAMPUAN AKADEMIK (TKA)
+                </h1>
+                <h2 class="title-header text-lg md:text-xl text-blue-700 tracking-wide uppercase mt-1">
+                    UPT SD NEGERI KEDUNGREJO 1
+                </h2>
+                <h3 class="title-header text-md md:text-lg text-slate-600 tracking-wider mt-0.5">
+                    TAHUN 2027
+                </h3>
+            </div>
+
+            <!-- Form Identitas -->
+            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap</label>
+                    <input type="text" id="input-nama" required placeholder="Masukkan Nama Siswa"
+                        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">NISN</label>
+                    <input type="input" id="input-nisn" required pattern="[0-9]+" placeholder="Masukkan 10 digit NISN"
+                        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Token Ujian</label>
+                    <input type="text" id="input-token" required placeholder="Masukkan Token (Contoh: DELIMA)"
+                        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition uppercase text-sm font-semibold tracking-wider">
+                </div>
+
+                <!-- Pesan Error Token -->
+                <div id="error-token" class="hidden bg-red-50 border border-red-200 text-red-600 text-xs md:text-sm p-3 rounded-lg flex items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation text-base flex-shrink-0"></i>
+                    <span>Maaf, token yang Anda masukkan salah. Silakan ulangi Kembali.</span>
+                </div>
+
+                <button type="submit" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-blue-500/30 transition duration-200 flex items-center justify-center gap-2">
+                    <span>MASUK UJIAN</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="mt-6 text-right border-t pt-3">
+                <span class="text-xs text-slate-500 italic font-semibold">Dibuat oleh: Sri Kayati</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL PETUNJUK PENGERJAAN ==================== -->
+    <div id="modal-petunjuk" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-100 animate-fade-in">
+            <div class="bg-blue-600 text-white p-4 px-6 flex items-center gap-3">
+                <i class="fa-solid fa-clipboard-list text-2xl"></i>
+                <div>
+                    <h3 class="font-bold text-lg leading-none">Petunjuk Pengerjaan</h3>
+                    <p class="text-xs text-blue-100 mt-1">Konfirmasi Peserta & Aturan Ujian</p>
+                </div>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <!-- Box Identitas -->
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-sm space-y-1">
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Nama Peserta:</span>
+                        <span id="confirm-nama" class="font-bold text-slate-800"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">NISN:</span>
+                        <span id="confirm-nisn" class="font-bold text-slate-800"></span>
+                    </div>
+                </div>
+
+                <!-- Aturan Ujian -->
+                <div class="text-slate-700 text-sm space-y-2">
+                    <p class="font-semibold text-slate-900">Bacalah petunjuk berikut sebelum memulai:</p>
+                    <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                        <li>Soal terdiri dari <strong>3 butir soal</strong> dengan waktu mengerjakan maksimal <strong>10 menit</strong>.</li>
+                        <li>Periksa Kembali jawaban Anda. Pastikan Anda menjawab dengan benar.</li>
+                    </ol>
+                    <div class="bg-emerald-50 text-emerald-800 p-3 rounded-lg font-bold text-center mt-3 text-base border border-emerald-200">
+                        Selamat mengerjakan!
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button onclick="startExam()" 
+                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                    <span>Saya Mengerti, Saya Siap Mengerjakan</span>
+                    <i class="fa-solid fa-circle-play"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 2. HALAMAN SOAL ==================== -->
+    <div id="page-soal" class="hidden flex-1 flex flex-col max-w-5xl w-full mx-auto p-3 md:p-6">
+        
+        <!-- Header Tes: Status & Timer & Navigasi -->
+        <div class="bg-white rounded-xl shadow-md p-4 mb-4 border border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <!-- Left Info -->
+            <div>
+                <h2 class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-blue-600"></i>
+                    <span>UJI COBA TKA 2027</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Peserta: <strong id="header-nama" class="text-slate-700"></strong> | NISN: <strong id="header-nisn" class="text-slate-700"></strong>
+                </p>
+            </div>
+
+            <!-- Timer & Navigasi Nomor -->
+            <div class="flex items-center justify-between md:justify-end gap-4">
+                <!-- Waktu -->
+                <div class="bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 rounded-lg flex items-center gap-2 font-mono font-bold text-sm">
+                    <i class="fa-regular fa-clock text-amber-600 animate-pulse"></i>
+                    <span id="timer-display">10:00</span>
+                </div>
+
+                <!-- Tombol Nomor Soal (1 s.d 3) -->
+                <div class="flex gap-2">
+                    <button onclick="goToQuestion(0)" id="nav-btn-0" class="w-10 h-10 rounded-lg font-bold text-sm flex items-center justify-center transition shadow-sm nav-btn-default">1</button>
+                    <button onclick="goToQuestion(1)" id="nav-btn-1" class="w-10 h-10 rounded-lg font-bold text-sm flex items-center justify-center transition shadow-sm nav-btn-default">2</button>
+                    <button onclick="goToQuestion(2)" id="nav-btn-2" class="w-10 h-10 rounded-lg font-bold text-sm flex items-center justify-center transition shadow-sm nav-btn-default">3</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Card Soal -->
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 flex-1 p-5 md:p-8 flex flex-col justify-between">
+            
+            <!-- Body Soal Dinamis -->
+            <div id="soal-container" class="space-y-6">
+                <!-- Konten Soal akan disuntikkan via JS -->
+            </div>
+
+            <!-- Footer Action Buttons -->
+            <div class="mt-8 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                <button onclick="prevQuestion()" id="btn-prev" class="px-4 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-100 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span>Kembali</span>
+                </button>
+
+                <button onclick="toggleDoubt()" id="btn-doubt" class="px-4 py-2.5 rounded-lg bg-slate-100 border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-amber-100 hover:text-amber-800 transition flex items-center gap-2">
+                    <input type="checkbox" id="chk-doubt" class="pointer-events-none">
+                    <span>Ragu-ragu</span>
+                </button>
+
+                <div class="flex gap-2">
+                    <button onclick="nextQuestion()" id="btn-next" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition flex items-center gap-2">
+                        <span>Selanjutnya</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                    <button onclick="confirmFinish()" id="btn-finish" class="hidden px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition flex items-center gap-2 shadow-md">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>Selesai</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==================== 3. HALAMAN HASIL / NILAI ==================== -->
+    <div id="page-hasil" class="hidden flex-1 flex flex-col items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-2xl w-full p-6 md:p-8 my-6">
+            
+            <div class="text-center space-y-3">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                
+                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800">Selamat!</h1>
+                <p class="text-slate-600 text-sm md:text-base max-w-md mx-auto">
+                    Anda telah menyelesaikan <strong>Uji Coba Tes Kemampuan Akademik (TKA)</strong>.
+                </p>
+
+                <!-- Box Skor -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 my-4 inline-block min-w-[240px]">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-1">Nilai yang Anda Dapatkan</span>
+                    <span id="final-score" class="text-5xl font-black text-blue-600 tracking-tight">0.00</span>
+                    <span class="text-xs text-slate-400 block mt-1">dari skala 100</span>
+                </div>
+            </div>
+
+            <!-- Detail Pembahasan Soal -->
+            <div class="mt-6 border-t pt-6">
+                <h3 class="font-bold text-slate-800 text-lg mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-blue-600"></i>
+                    <span>Pembahasan & Evaluasi Jawaban</span>
+                </h3>
+                
+                <div id="pembahasan-list" class="space-y-4">
+                    <!-- Digenereate via JS -->
+                </div>
+            </div>
+
+            <div class="mt-8 text-center border-t pt-4">
+                <button onclick="location.reload()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-6 rounded-xl transition text-sm inline-flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Ulangi Uji Coba</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Logic -->
+    <script>
+        // Data Soal Lengkap Sesuai Lampiran
+        const questionsData = [
+            {
+                id: 1,
+                type: 'PG',
+                title: 'SOAL NO. 1',
+                stimulus: `Taman Nasional Komodo di Provinsi Nusa Tenggara Timur merupakan salah satu destinasi wisata bahari dan alam yang sangat mendunia. Kawasan ini terkenal sebagai habitat asli hewan purba komodo. Selain melihat kehidupan satwa langka, para pelancong juga dapat menikmati keindahan panorama laut melalui kegiatan penyelaman atau sekadar berenang di tepi pantai. Banyak wisatawan mancanegara yang memesan paket akomodasi jauh-jauh hari agar bisa menginap di sekitar kawasan pantai yang indah.<br><br>Pemerintah setempat terus mengembangkan sektor pariwisata berbasis lingkungan di area ini. Konservasi alam ditingkatkan agar ekosistem darat dan laut tetap terjaga dari kerusakan. Para pengelola juga menyediakan pemandu profesional yang bertugas mendampingi setiap pengunjung selama menjelajahi pulau. Keberadaan fasilitas yang memadai serta kebersihan lokasi yang selalu dijaga membuat tempat ini menjadi daya tarik utama bagi wisatawan yang merindukan suasana alam asri.`,
+                sumber: `(Sumber: Adaptasi Deskripsi Pariwisata NTT / <a href="https://id.trip.com/guide/activity/tempat-wisata-di-indonesia.html" target="_blank">Trip.com Wisata Indonesia</a>)`,
+                prompt: `1. Makna dari kosakata khusus <em>akomodasi</em> pada teks deskripsi di atas adalah...`,
+                options: [
+                    { key: 'A', text: 'Fasilitas penginapan bagi para wisatawan selama berlibur.' },
+                    { key: 'B', text: 'Layanan transportasi menuju berbagai destinasi wisata.' },
+                    { key: 'C', text: 'Kegiatan pemanduan bagi pengunjung di lokasi objek wisata.' },
+                    { key: 'D', text: 'Paket konsumsi dan makanan khas untuk para pengunjung.' }
+                ],
+                key: 'A',
+                pembahasan: `<strong>Jawaban Benar: A</strong><br>
+                <em>Analisis Kata:</em> Kata <strong>akomodasi</strong> dalam bidang pariwisata bermakna sarana untuk menyediakan tempat menginap atau tempat tinggal sementara (seperti hotel, homestay, atau penginapan) bagi wisatawan. Hal ini diperjelas oleh konteks kalimat pada teks: <em>"memesan paket akomodasi jauh-jauh hari agar bisa menginap..."</em>.`
+            },
+            {
+                id: 2,
+                type: 'MCMA',
+                title: 'SOAL NO. 2',
+                stimulus: `Desa Wisata Penglipuran di Bali merupakan salah satu destinasi unggulan yang terkenal akan kebersihan dan kerapian permukimannya. Desa ini mengusung tata ruang tradisional Bali yang berkonsep Tri Mandala, yaitu pembagian wilayah desa menjadi tiga bagian seimbang. Di bagian paling utara terdapat area tempat suci untuk beribadah. Bagian tengah dialokasikan sebagai pemukiman penduduk, sedangkan bagian selatan diperuntukkan bagi area pemakaman umum. Keunikan arsitektur gerbang rumah warga yang seragam semakin menambah daya tarik kebudayaan di desa ini.<br><br>Selain menjaga arsitektur lokal, warga Desa Penglipuran sangat ketat melestarikan kebersihan lingkungan sekitar. Seluruh area desa bebas dari asap kendaraan bermotor karena pengunjung diwajibkan memarkirkan kendaraannya di luar kawasan pemukiman. Pengelola desa juga menyediakan berbagai fasilitas umum, seperti area parkir yang luas, toilet bersih, serta kios suvenir yang menjual kerajinan khas lokal. Kesadaran masyarakat yang tinggi dalam menjaga adat dan lingkungan menjadikan desa wisata ini selalu ramai dikunjungi wisatawan lokal maupun mancanegara.`,
+                sumber: `(Sumber: Adaptasi Desa Wisata Penglipuran / <a href="https://www.julo.co.id/blog/menjelajahi-keindahan-20-tempat-wisata-terkenal-di-indonesia" target="_blank">JULO Wisata Indonesia</a>)`,
+                prompt: `2. Berdasarkan paragraf kedua, pilihlah dua informasi tersurat yang tepat sesuai dengan isi teks!<br><span class="text-xs font-normal text-slate-500 italic">(Pilihlah 2 jawaban benar)</span>`,
+                options: [
+                    { key: 'A', text: 'Pengunjung diwajibkan memarkir kendaraan di luar pemukiman.' },
+                    { key: 'B', text: 'Bangunan rumah warga memiliki gerbang arsitektur yang seragam.' },
+                    { key: 'C', text: 'Pengelola menyediakan kios suvenir yang menjual kerajinan lokal.' }
+                ],
+                key: ['A', 'C'],
+                pembahasan: `<strong>Jawaban Benar: A dan C</strong><br>
+                - <strong>Opsi A (BENAR):</strong> Merupakan informasi tersurat pada kalimat kedua paragraf 2: <em>"...pengunjung diwajibkan memarkirkan kendaraannya di luar kawasan pemukiman."</em><br>
+                - <strong>Opsi B (SALAH):</strong> Informasi ini terdapat pada paragraf 1, bukan paragraf 2.<br>
+                - <strong>Opsi C (BENAR):</strong> Merupakan informasi tersurat pada kalimat ketiga paragraf 2: <em>"...serta kios suvenir yang menjual kerajinan khas lokal."</em>`
+            },
+            {
+                id: 3,
+                type: 'KATEGORI',
+                title: 'SOAL NO. 3',
+                stimulus: `Kawasan Wisata Kawah Ijen di Jawa Timur menawarkan pesona alam yang sangat unik dan memukau. Destinasi ini terkenal dengan fenomena api biru (blue fire) serta pemandangan danau kawah asam berwarna hijau toska yang indah. Setiap harinya, ratusan wisatawan mendaki rute yang cukup terjal demi menyaksikan keajaiban alam tersebut secara langsung. Namun, keindahan ini berdampingan dengan perjuangan para penambang belerang tradisional yang menempuh jalan berbahaya setiap hari demi mencari nafkah.<br><br>Tingginya jumlah kunjungan wisatawan berisiko menimbulkan masalah lingkungan jika tidak dikelola dengan bijak. Sampah plastik bekas minuman dan makanan sering kali ditemukan berserakan di sepanjang jalur pendakian. Hal ini tentu dapat merusak keasrian alam Kawah Ijen. Oleh karena itu, para pengunjung diimbau untuk selalu membawa pulang sampahnya dan mematuhi petunjuk keselamatan demi menjaga kelestarian kawah serta keselamatan bersama.`,
+                sumber: `(Sumber: Pesona Kawah Ijen / <a href="https://angkasatour.co.id/destinasi-wisata-terbaik-indonesia/" target="_blank">Angkasa Tour Indonesia</a>)`,
+                prompt: `3. Berdasarkan pesan moral atau amanat yang terkandung dalam teks deskripsi di atas, tentukan kebenaran dari setiap pernyataan berikut dengan memberi tanda centang (&checkmark;) pada kolom Benar atau Salah!`,
+                statements: [
+                    { id: 1, text: 'Kita hendaknya selalu menjaga kebersihan lingkungan dengan tidak membuang sampah sembarangan di tempat wisata.', key: 'Benar' },
+                    { id: 2, text: 'Kita sebaiknya mematuhi aturan keselamatan agar perjalanan berwisata di alam terbuka tetap aman dan menyenangkan.', key: 'Benar' },
+                    { id: 3, text: 'Kita harus membatasi diri untuk tidak mendaki gunung agar keasrian ekosistem alam tetap terjaga dari kerusakan.', key: 'Salah' }
+                ],
+                pembahasan: `<strong>Jawaban Benar: 1. Benar, 2. Benar, 3. Salah</strong><br>
+                - <strong>Pernyataan 1 (BENAR):</strong> Sesuai dengan amanat paragraf 2 untuk tidak mengotori lingkungan.<br>
+                - <strong>Pernyataan 2 (BENAR):</strong> Sesuai pesan di akhir paragraf 2 untuk mematuhi petunjuk keselamatan.<br>
+                - <strong>Pernyataan 3 (SALAH):</strong> Teks tidak melarang kegiatan mendaki gunung, melainkan mengimbau agar pengunjung bersikap bijak terhadap lingkungan.`
+            }
+        ];
+
+        // State Aplikasi
+        let currentQuestionIndex = 0;
+        let studentAnswers = {
+            1: null,        // Key misal 'A'
+            2: [],          // Array misal ['A', 'C']
+            3: { 1: null, 2: null, 3: null } // Object misal {1: 'Benar', 2: 'Salah', 3: 'Benar'}
+        };
+        let doubtStatus = [false, false, false];
+        let timerInterval = null;
+        let timeLeft = 600; // 10 menit dalam detik
+        let studentProfile = { nama: '', nisn: '' };
+
+        // 1. Handler Login
+        function handleLogin(e) {
+            e.preventDefault();
+            const nama = document.getElementById('input-nama').value.trim();
+            const nisn = document.getElementById('input-nisn').value.trim();
+            const token = document.getElementById('input-token').value.trim().toUpperCase();
+            const errorElement = document.getElementById('error-token');
+
+            if (token !== 'DELIMA') {
+                errorElement.classList.remove('hidden');
+                return;
+            }
+
+            errorElement.classList.add('hidden');
+            studentProfile.nama = nama;
+            studentProfile.nisn = nisn;
+
+            // Tampilkan Modal Petunjuk
+            document.getElementById('confirm-nama').innerText = nama;
+            document.getElementById('confirm-nisn').innerText = nisn;
+            document.getElementById('modal-petunjuk').classList.remove('hidden');
+        }
+
+        // 2. Start Exam
+        function startExam() {
+            document.getElementById('modal-petunjuk').classList.add('hidden');
+            document.getElementById('page-login').classList.add('hidden');
+            document.getElementById('page-soal').classList.remove('hidden');
+
+            document.getElementById('header-nama').innerText = studentProfile.nama;
+            document.getElementById('header-nisn').innerText = studentProfile.nisn;
+
+            renderQuestion();
+            startTimer();
+        }
+
+        // Timer Logic
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Waktu pengerjaan telah habis!");
+                    calculateScore();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer-display').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Render Soal
+        function renderQuestion() {
+            const q = questionsData[currentQuestionIndex];
+            const container = document.getElementById('soal-container');
+            
+            let html = `
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-1">${q.title}</h3>
+                    
+                    <!-- Stimulus Box -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+                        <div class="text-stimulus">${q.stimulus}</div>
+                        <div class="text-sumber mt-3 border-t border-slate-200 pt-2">${q.sumber}</div>
+                    </div>
+
+                    <!-- Pokok Soal -->
+                    <div class="text-soal mb-4">${q.prompt}</div>
+                </div>
+            `;
+
+            // Opsi Jawaban berdasarkan Tipe
+            if (q.type === 'PG') {
+                html += `<div class="space-y-3">`;
+                q.options.forEach(opt => {
+                    const isSelected = studentAnswers[q.id] === opt.key;
+                    html += `
+                        <div onclick="selectPG('${opt.key}')" 
+                            class="pg-option flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition ${isSelected ? 'selected' : ''}">
+                            <div class="pg-bullet">${opt.key}</div>
+                            <div class="text-opsi flex-1">${opt.text}</div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            } else if (q.type === 'MCMA') {
+                html += `<div class="space-y-3">`;
+                q.options.forEach(opt => {
+                    const isSelected = (studentAnswers[q.id] || []).includes(opt.key);
+                    html += `
+                        <div onclick="toggleMCMA('${opt.key}')" 
+                            class="mcma-option flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition ${isSelected ? 'selected' : ''}">
+                            <div class="mcma-box">
+                                ${isSelected ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                            </div>
+                            <div class="text-opsi flex-1"><strong>${opt.key}.</strong> ${opt.text}</div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            } else if (q.type === 'KATEGORI') {
+                html += `
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-slate-300 text-sm rounded-lg overflow-hidden">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700">
+                                    <th class="border border-slate-300 p-3 text-left w-12 text-center">No.</th>
+                                    <th class="border border-slate-300 p-3 text-left text-opsi">Pernyataan Amanat</th>
+                                    <th class="border border-slate-300 p-3 text-center w-24">Benar</th>
+                                    <th class="border border-slate-300 p-3 text-center w-24">Salah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                q.statements.forEach(st => {
+                    const currentVal = studentAnswers[q.id][st.id];
+                    html += `
+                        <tr class="hover:bg-slate-50">
+                            <td class="border border-slate-300 p-3 text-center font-bold text-slate-600">${st.id}</td>
+                            <td class="border border-slate-300 p-3 text-opsi">${st.text}</td>
+                            <td class="border border-slate-300 p-3 text-center">
+                                <div onclick="selectCategory(${st.id}, 'Benar')" 
+                                    class="category-check ${currentVal === 'Benar' ? 'active-true' : ''}">
+                                    ${currentVal === 'Benar' ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                                </div>
+                            </td>
+                            <td class="border border-slate-300 p-3 text-center">
+                                <div onclick="selectCategory(${st.id}, 'Salah')" 
+                                    class="category-check ${currentVal === 'Salah' ? 'active-false' : ''}">
+                                    ${currentVal === 'Salah' ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+
+            // Update Status Ragu-ragu Checkbox
+            document.getElementById('chk-doubt').checked = doubtStatus[currentQuestionIndex];
+
+            // Update Controls Navigasi Bawah
+            document.getElementById('btn-prev').disabled = currentQuestionIndex === 0;
+            
+            if (currentQuestionIndex === questionsData.length - 1) {
+                document.getElementById('btn-next').classList.add('hidden');
+                document.getElementById('btn-finish').classList.remove('hidden');
+            } else {
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-finish').classList.add('hidden');
+            }
+
+            updateNavButtonsUI();
+        }
+
+        // Selection Handlers
+        function selectPG(key) {
+            studentAnswers[1] = key;
+            renderQuestion();
+        }
+
+        function toggleMCMA(key) {
+            let current = studentAnswers[2] || [];
+            if (current.includes(key)) {
+                current = current.filter(k => k !== key);
+            } else {
+                current.push(key);
+            }
+            studentAnswers[2] = current;
+            renderQuestion();
+        }
+
+        function selectCategory(stId, val) {
+            studentAnswers[3][stId] = val;
+            renderQuestion();
+        }
+
+        function toggleDoubt() {
+            doubtStatus[currentQuestionIndex] = !doubtStatus[currentQuestionIndex];
+            renderQuestion();
+        }
+
+        // Navigasi Soal
+        function goToQuestion(index) {
+            currentQuestionIndex = index;
+            renderQuestion();
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questionsData.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            }
+        }
+
+        // Update Navigasi Atas (Warna Button 1, 2, 3)
+        function updateNavButtonsUI() {
+            for (let i = 0; i < 3; i++) {
+                const btn = document.getElementById(`nav-btn-${i}`);
+                btn.className = "w-10 h-10 rounded-lg font-bold text-sm flex items-center justify-center transition shadow-sm ";
+                
+                const qId = i + 1;
+                let isAnswered = false;
+
+                if (i === 0) isAnswered = studentAnswers[1] !== null;
+                else if (i === 1) isAnswered = (studentAnswers[2] && studentAnswers[2].length > 0);
+                else if (i === 2) isAnswered = Object.values(studentAnswers[3]).some(v => v !== null);
+
+                if (doubtStatus[i]) {
+                    btn.classList.add('nav-btn-doubt');
+                } else if (isAnswered) {
+                    btn.classList.add('nav-btn-answered');
+                } else {
+                    btn.classList.add('nav-btn-default');
+                }
+
+                if (i === currentQuestionIndex) {
+                    btn.classList.add('ring-4', 'ring-blue-400', 'ring-offset-1');
+                }
+            }
+        }
+
+        function confirmFinish() {
+            if (confirm("Apakah Anda yakin ingin menyelesaikan Uji Coba Tes Kemampuan Akademik ini?")) {
+                clearInterval(timerInterval);
+                calculateScore();
+            }
+        }
+
+        // Perhitungan Skor & Tampilan Akhir
+        function calculateScore() {
+            let correctCount = 0;
+
+            // Soal 1 Evaluation (PG)
+            if (studentAnswers[1] === questionsData[0].key) {
+                correctCount++;
+            }
+
+            // Soal 2 Evaluation (MCMA - A dan C)
+            const ans2 = (studentAnswers[2] || []).sort();
+            const key2 = questionsData[1].key.sort();
+            if (JSON.stringify(ans2) === JSON.stringify(key2)) {
+                correctCount++;
+            }
+
+            // Soal 3 Evaluation (Kategori - Wajib Benar Semua)
+            const ans3 = studentAnswers[3];
+            const st3 = questionsData[2].statements;
+            let catCorrect = true;
+            st3.forEach(st => {
+                if (ans3[st.id] !== st.key) {
+                    catCorrect = false;
+                }
+            });
+            if (catCorrect) {
+                correctCount++;
+            }
+
+            // Rumus Nilai = (Jumlah Benar x 100) / 3
+            const finalScore = ((correctCount * 100) / 3).toFixed(2);
+
+            // Render Hasil
+            document.getElementById('page-soal').classList.add('hidden');
+            document.getElementById('page-hasil').classList.remove('hidden');
+            document.getElementById('final-score').innerText = finalScore;
+
+            // Render Pembahasan
+            const pembContainer = document.getElementById('pembahasan-list');
+            pembContainer.innerHTML = '';
+
+            questionsData.forEach((q, idx) => {
+                let isRight = false;
+                if (idx === 0) isRight = (studentAnswers[1] === q.key);
+                if (idx === 1) isRight = (JSON.stringify((studentAnswers[2]||[]).sort()) === JSON.stringify(q.key.sort()));
+                if (idx === 2) {
+                    isRight = q.statements.every(st => studentAnswers[3][st.id] === st.key);
+                }
+
+                const item = document.createElement('div');
+                item.className = `p-4 rounded-xl border ${isRight ? 'border-emerald-200 bg-emerald-50/50' : 'border-rose-200 bg-rose-50/50'}`;
+                item.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-bold text-slate-800 text-sm">${q.title}</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${isRight ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+                            ${isRight ? 'BENAR (Skor 1)' : 'SALAH (Skor 0)'}
+                        </span>
+                    </div>
+                    <div class="text-xs text-slate-700 space-y-1">
+                        ${q.pembahasan}
+                    </div>
+                `;
+                pembContainer.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
